@@ -27,9 +27,6 @@ from ..models import TimesheetEntry  # only to create instances for bulk_create
 def _read_rows(f: TextIO, filename: str) -> tuple[int, list[TimesheetRow]]:
     reader = csv.reader(f)
 
-    # skipping the header
-    next(reader, None)
-
     out: list[TimesheetRow] = []
     for lineno, row in enumerate(reader, start=2):
         if len(row) != 4:
