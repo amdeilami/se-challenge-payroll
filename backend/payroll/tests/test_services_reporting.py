@@ -3,16 +3,19 @@ from io import StringIO
 from payroll.services import import_timesheet, payroll_for_range
 from datetime import date
 from decimal import Decimal
+from pathlib import Path
 
-CSV = """14/11/2023,7.5,1,A
-9/11/2023,4,2,B
-10/11/2023,4,2,B
-"""
+# CSV = """14/11/2023,7.5,1,A
+# 9/11/2023,4,2,B
+# 10/11/2023,4,2,B
+# """
 
 
 class PayrollReportTests(TestCase):
     def setUp(self):
-        import_timesheet(StringIO(CSV), "time-report-5.csv")
+        here = Path(__file__).resolve().parent
+        f = (here / "time-report-99.csv").open(mode="r", encoding="utf-8")
+        import_timesheet(f, "time-report-99.csv")
 
     def test_half_month_grouping_and_amounts(self):
         rows = payroll_for_range(start_date(2023, 11, 1), start_date(2023, 11, 30))

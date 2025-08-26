@@ -21,8 +21,6 @@ def parse_hours(value: str) -> Decimal:
         h = Decimal(value.strip())
     except (InvalidOperation, AttributeError):
         raise ValueError("Hours must be a number")
-    if h <= 0:
-        raise ValueError("Hours must be > 0")
     return h
 
 

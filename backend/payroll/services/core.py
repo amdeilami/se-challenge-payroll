@@ -26,13 +26,19 @@ from ..models import TimesheetEntry  # only to create instances for bulk_create
 
 def _read_rows(f: TextIO, filename: str) -> tuple[int, list[TimesheetRow]]:
     reader = csv.reader(f)
+    _header = next(reader)
 
     out: list[TimesheetRow] = []
-    for lineno, row in enumerate(reader, start=2):
+    for row in reader:
+        """
+        I can have an enumerate here to iterate and have line numbers too
+        in case if any line has an issue, I can report it more specifically
         if len(row) != 4:
             raise InvalidCSVFormatError(
                 f"Line {lineno}: expected 4 columns, got {len(row)}"
             )
+        """
+
         raw_date, raw_hours, raw_emp, raw_group = [c.strip() for c in row]
 
         day = parse_ddmmyyyy(raw_date)
@@ -94,7 +100,7 @@ def import_timesheet(f: TextIO, filename: str) -> ImportResult:
                 job_group=grp,
                 date=r.day,
                 hours=r.hours,
-                hourly_rate=grp.hourly_rate,  # snapshot here (calculation-free)
+                hourly_rate=grp.hourly_rate,
             )
         )
 
