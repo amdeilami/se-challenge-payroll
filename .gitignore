@@ -1,0 +1,15 @@
+.venv/
+
+# these are the files/directories that should be ignored in Django, might not be complete...
+# TODO: will check that later
+db.sqlite3
+/media/
+/static/
+/staticfiles/
+
+.vscode/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyd
