@@ -3,6 +3,7 @@ from datetime import date
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from dataclasses import asdict
 
 from .services import import_timesheet, payroll_for_range
 from .exceptions import (
@@ -43,9 +44,7 @@ def upload_timesheet(request):
         # catch stray ValueErrors from parsing if any slipped through
         return _bad_request(str(e), status=400)
 
-    return JsonResponse(
-        {"file_id": result.file_id, "rows_inserted": result.rows_inserted}, status=201
-    )
+    return JsonResponse(asdict(result), status=201)
 
 
 @require_http_methods(["GET"])
@@ -64,16 +63,5 @@ def payroll(request):
     except ValueError:
         return _bad_request("Dates must be YYYY-MM-DD")
 
-    lines = payroll_for_range(start, end)
-    data = [
-        {
-            "employee_id": r.employee_id,
-            "pay_period": {
-                "start": r.period_start.isoformat(),
-                "end": r.period_end.isoformat(),
-            },
-            "amount_paid": f"{r.amount:.2f}",
-        }
-        for r in lines
-    ]
+    data = payroll_for_range(start, end)
     return JsonResponse({"results": data}, status=200)

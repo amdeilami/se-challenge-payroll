@@ -21,10 +21,16 @@ class PayrollReportTests(TestCase):
         rows = payroll_for_range(start_date(2023, 11, 1), start_date(2023, 11, 30))
         # helper for readability
         by_period = {
-            (r.employee_id, r.period_start, r.period_end): r.amount for r in rows
+            (
+                r["employee_id"],
+                date.fromisoformat(r["pay_period"]["start"]),
+                date.fromisoformat(r["pay_period"]["end"]),
+            ): Decimal(r["amount_paid"])
+            for r in rows
         }
 
         # Nov 1–15: 7.5h @ $20 = 150.00
+        # The calculation above is based on the current test-99.csv file, I should update it whenever I change test files
         self.assertEqual(
             by_period[("1", date(2023, 11, 1), date(2023, 11, 15))], decimal("150.00")
         )

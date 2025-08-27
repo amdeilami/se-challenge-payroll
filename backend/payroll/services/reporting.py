@@ -21,7 +21,7 @@ def payroll_for_range(start, end) -> List[PayrollLine]:
         p = period_for(e.date)
         key = (e.employee.employee_id, p.start, p.end)
         totals[key] += e.hours * e.hourly_rate
-    return [
+    lines = [
         PayrollLine(
             employee_id=k[0],
             period_start=k[1],
@@ -30,3 +30,16 @@ def payroll_for_range(start, end) -> List[PayrollLine]:
         )
         for k, v in sorted(totals.items())
     ]
+
+    data = [
+        {
+            "employee_id": r.employee_id,
+            "pay_period": {
+                "start": r.period_start.isoformat(),
+                "end": r.period_end.isoformat(),
+            },
+            "amount_paid": f"{r.amount:.2f}",
+        }
+        for r in lines
+    ]
+    return data
