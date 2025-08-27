@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { uploadTimesheet, fetchPayroll } from './lib/api'
-
+import './App.css'
 
 
 export default function App() {
@@ -73,11 +73,11 @@ export default function App() {
   }
 
   return (
-    <div style={{ maxWidth: 1080, margin: '16px auto', padding: '16px' }}>
+    <div className='root' /*style={{ maxWidth: 1080, margin: '16px auto', padding: '16px' }}*/>
       <h1 style={{textAlign: 'center'}}>Wave Demo</h1>
 
       {/* Upload CSV */}
-      <section style={card}>
+      <section className="card">
         <h2 style={{ marginTop: 0, marginBottom: 32, textAlign: 'center' }}> Upload your CSV file</h2>
         <form onSubmit={onUpload} style={{maxWidth: 150, margin: '0 auto'}}>
           <input
@@ -96,7 +96,7 @@ export default function App() {
       </section>
 
       {/* Fetch Report */}
-      <section style={card}>
+      <section className="card">
         <h2 style={{ marginTop: 0, marginBottom: 32, textAlign: 'center' }}> Fetch Payroll Report</h2>
         <form onSubmit={onFetchReport} style={{ display: 'grid', gap: 12, maxWidth: 200,  margin: '0 auto' }}>
           <label>
@@ -127,25 +127,10 @@ export default function App() {
         {report && (
           <>
             <h3>Report (JSON)</h3>
-            <pre style={pre}>{JSON.stringify(report, null, 2)}</pre>
+            <pre className='pre'>{JSON.stringify(report, null, 2)}</pre>
           </>
         )}
       </section>
     </div>
   )
-}
-
-const card = {
-  border: '1px solid #eb5deb',
-  borderRadius: 4,
-  padding: 16,
-  marginBottom: 16,
-}
-
-const pre = {
-  background: '#edeef32a',
-  color: '#3df81dad',
-  padding: 12,
-  borderRadius: 6,
-  overflowX: 'auto',
 }

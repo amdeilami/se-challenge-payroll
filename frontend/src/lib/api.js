@@ -11,7 +11,7 @@ export async function uploadTimesheet(file) {
   return parseResponse(res);
 }
 
-/** Fetch payroll report (JSON) for a date range */
+/** Fetch payroll report (in JSON) for a date range */
 export async function fetchPayroll({ start, end }) {
   const params = new URLSearchParams({ start, end });
   const res = await fetch(`${API_BASE}/payroll?${params.toString()}`);
