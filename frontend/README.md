@@ -14,4 +14,10 @@ If you are developing a production application, we recommend using TypeScript wi
 ### Setup and Run
 
 1. make sure you have `node` and `npm` installed on your side.
-2. run the frontend app using `npm run dev -- --host 0.0.0.0`, it has already been configured to target port `8000` on the localhost for backend.
+2. install any dependencies needed.
+
+```bash
+npm install
+```
+
+3. run the frontend app using `npm run dev -- --host 0.0.0.0`, it has already been configured to target port `8000` on the localhost for backend.
