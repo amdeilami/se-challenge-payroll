@@ -14,7 +14,7 @@ def period_for(day: date) -> PayPeriod:
     return PayPeriod(d(day.year, day.month, 16), d(day.year, day.month, last))
 
 
-def payroll_for_range(start, end) -> List[PayrollLine]:
+def payroll_for_range(start: date, end: date) -> List[PayrollLine]:
     totals = defaultdict(Decimal)
     entries = list_entries_between(start, end)
     for e in entries:
