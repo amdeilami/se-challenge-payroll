@@ -7,7 +7,7 @@ For both backend and frontend, setup and run is straightforward and has been men
 1. **_How did you test that your implementation was correct?_** <br>
    I implemented and ran a series of tests for the backend, as well as using the frontend to interact with backend and observer the results.
 2. **If this application was destined for a production environment, what would you add or change?** <br>
-   I would add mechanisms for logging, automated test and deployment after push alongside adding some more functionalities for customers satisfaction. Coming up with a preferred code style using a linter, and some design decision like chosing another database as we grow are also other things that I would do.
+   I would add mechanisms for observability and use a tool like `dataDog` for logs and metrics, automated test and deployment after push alongside adding some more functionalities for customers satisfaction. I think having the application running on a container would be much better for deployment and also scaling in the future. Coming up with a preferred code style using a linter, and some design decision like chosing another database as we grow are also other things that I would do.
 3. **What compromises did you have to make as a result of the time constraints of this challenge?** <br>
    I couldn't work that much on the appearance of the frontend, I also wanted to do checks and validations on the front, this way the number of bad requests to the server would be less. Wanted to write more test cases, make exceptions more informative and refactor some parts of the code as well.
 
