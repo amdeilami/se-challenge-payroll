@@ -23,3 +23,9 @@ class PayrollLine:
     period_start: date
     period_end: date
     amount: Decimal
+
+
+@dataclass(frozen=True)
+class PayPeriod:
+    start: date
+    end: date

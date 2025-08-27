@@ -1,15 +1,11 @@
 import csv
-from decimal import Decimal
-from typing import TextIO, List
-from collections import defaultdict
+from typing import TextIO
 
 from django.db import transaction, IntegrityError
 from .utils import parse_hours, normalize_group, parse_file_id, parse_ddmmyyyy
-from .pay_periods import period_for
-from .dtos import TimesheetRow, ImportResult, PayrollLine
+from .dtos import TimesheetRow, ImportResult
 from ..exceptions import (
     DuplicateUploadError,
-    InvalidCSVFormatError,
     UnknownJobGroupError,
     DuplicateTimesheetRowError,
 )
@@ -78,17 +74,12 @@ def import_timesheet(f: TextIO, filename: str) -> ImportResult:
         raise UnknownJobGroupError("A/B not seeded")
 
     # Prepare model instances without saving (no DB in services except upload)
-    seen = set()
     to_create: list[TimesheetEntry] = []
 
     for r in rows:
-        key = (r.employee_id, r.day, r.job_group_code, str(r.hours))
-        if key in seen:
-            # duplicate row within the same file before hitting DB
-            raise DuplicateTimesheetRowError(f"Duplicate row for {key}")
-        seen.add(key)
+        _key = (r.employee_id, r.day, r.job_group_code, str(r.hours))
 
-        emp = get_employee(r.employee_id) or get_or_create_employee(r.employee_id)
+        emp = get_or_create_employee(r.employee_id)
         grp = group_map.get(r.job_group_code)
         if not grp:
             raise UnknownJobGroupError(r.job_group_code)
@@ -111,21 +102,3 @@ def import_timesheet(f: TextIO, filename: str) -> ImportResult:
         raise DuplicateTimesheetRowError(str(e))
 
     return ImportResult(file_id=file_id, rows_inserted=len(to_create))
-
-
-def payroll_for_range(start, end) -> List[PayrollLine]:
-    totals = defaultdict(Decimal)
-    entries = list_entries_between(start, end)
-    for e in entries:
-        p = period_for(e.date)
-        key = (e.employee.employee_id, p.start, p.end)
-        totals[key] += e.hours * e.hourly_rate
-    return [
-        PayrollLine(
-            employee_id=k[0],
-            period_start=k[1],
-            period_end=k[2],
-            amount=v.quantize(Decimal("0.01")),
-        )
-        for k, v in sorted(totals.items())
-    ]
