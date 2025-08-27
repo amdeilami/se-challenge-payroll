@@ -12,12 +12,31 @@ I used `Django` as a reputable and widely-used framework for backend. Although t
 
 ### Setup and Run
 
-This project has been tested on Ubuntu 24.04 and it should be fine on other versions.
+This project has been tested on Ubuntu 24.04 and it should be fine on other versions. The python version used was `3.12.3`.
 
 1. clone the repository and change your working directory to `backend`.
 
+```bash
+cd backend
+```
+
 2. I used a virtual environment to make it more standard `(e.g. python3 -m venv .venv)`. It doesn't have too many requirements right now, probably if you have an updated `Django` installed on your machine it should be fine. But if needed, you can make your own virtual environmet and use `requirements.txt` to install dependencies, make sure you activate your virtual environment prior to run.
 
-3. Run the migration for the database `python manage.py migrate`.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-4. Run the app on port `8000` using `python manage.py runserver 8000`
+3. Create and run migrations for the database.
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+4. Run the app on port `8000` (Please note that the frontend proxy direct API requests to port `8000`, you can change it if you want by modifying `/frontend/vite.config.js`)
+
+```bash
+python manage.py runserver 8000
+```
