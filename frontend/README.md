@@ -20,4 +20,8 @@ If you are developing a production application, we recommend using TypeScript wi
 npm install
 ```
 
-3. run the frontend app using `npm run dev -- --host 0.0.0.0`, it has already been configured to target port `8000` on the localhost for backend.
+3. run the frontend app using the follwing command, it has already been configured to target port `8000` on the localhost for backend.
+
+```bash
+npm run dev -- --host 0.0.0.0
+```
